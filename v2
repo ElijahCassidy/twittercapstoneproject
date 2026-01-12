@@ -1,0 +1,111 @@
+import streamlit as st
+
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #E1F5FE;
+    }
+    div.stButton > button:first-child[kind="primary"] {
+        background-color: #ff4b4b;
+        color: white;
+        border-color: #ff4b4b;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+if 'users' not in st.session_state:
+    st.session_state.users = {}
+if 'posts' not in st.session_state:
+    st.session_state.posts = []
+if 'post_id' not in st.session_state:
+    st.session_state.post_id = 1
+if 'choice' not in st.session_state:
+    st.session_state.choice = "View Feed"
+if 'liked_posts' not in st.session_state:
+    st.session_state.liked_posts = set()
+
+st.title("Twitter Clone")
+menu = ["View Feed", "Make a Post", "Create User", "Edit Bio"]
+cols = st.columns(len(menu))
+
+for i, tab in enumerate(menu):
+    if cols[i].button(tab, use_container_width=True):
+        st.session_state.choice = tab
+
+st.divider()
+
+choice = st.session_state.choice
+
+if choice == "Create User":
+    st.subheader("Create a New Account")
+    new_user = st.text_input("Enter a username")
+    new_bio = st.text_area("Enter your bio")
+    
+    if st.button("Register"):
+        if new_user and new_user not in st.session_state.users:
+            st.session_state.users[new_user] = {'bio': new_bio, 'followers': 0}
+            st.success(f"User '{new_user}' created!")
+        else:
+            st.error("Username already exists or is empty.")
+
+elif choice == "Make a Post":
+    st.subheader("Share something!")
+    if not st.session_state.users:
+        st.warning("Please create a user first.")
+    else:
+        post_user = st.selectbox("Who are you?", list(st.session_state.users.keys()))
+        content = st.text_area("What's on your mind?")
+        
+        if st.button("Post"):
+            new_post = {
+                "id": st.session_state.post_id,
+                "user": post_user,
+                "text": content,
+                "likes": 0
+            }
+            st.session_state.posts.append(new_post)
+            st.session_state.post_id += 1
+            st.success("Post shared to the feed!")
+
+elif choice == "View Feed":
+    st.markdown("### **THE FEED**")
+    
+    if not st.session_state.posts:
+        st.info("No posts yet.")
+    else:
+        for index, post in enumerate(reversed(st.session_state.posts)):
+            original_index = len(st.session_state.posts) - 1 - index
+            
+            with st.container():
+                st.write(f"**@{post['user']}**")
+                st.write(post['text'])
+                
+                is_liked = post['id'] in st.session_state.liked_posts
+                button_label = "❤️ Liked" if is_liked else "♡ Like"
+                
+                if st.button(button_label, key=f"like_{post['id']}", type="primary" if is_liked else "secondary"):
+                    if not is_liked:
+                        st.session_state.posts[original_index]['likes'] += 1
+                        st.session_state.liked_posts.add(post['id'])
+                    else:
+                        st.session_state.posts[original_index]['likes'] -= 1
+                        st.session_state.liked_posts.remove(post['id'])
+                    st.rerun()
+                
+                st.caption(f"Total Likes: {post['likes']}")
+                st.divider()
+
+elif choice == "Edit Bio":
+    st.subheader("Update Your Profile")
+    if not st.session_state.users:
+        st.warning("No users found.")
+    else:
+        edit_user = st.selectbox("Select your username", list(st.session_state.users.keys()))
+        if edit_user:
+            new_bio = st.text_area("New Bio", value=st.session_state.users[edit_user]['bio'])
+            if st.button("Update"):
+                st.session_state.users[edit_user]['bio'] = new_bio
+                st.success("Bio updated!")
