@@ -1,0 +1,23 @@
+import streamlit as st
+
+# 1. Create a "Storage Box" for tweets if it doesn't exist
+if "feed" not in st.session_state:
+    st.session_state.feed = []
+
+st.title("Simple Twitter")
+
+# 2. The Input Area
+user_tweet = st.text_input("What's on your mind?")
+post_button = st.button("Post Tweet")
+
+# 3. The Logic (What happens when you click the button)
+if post_button:
+    if user_tweet: # Check if the user actually typed something
+        st.session_state.feed.insert(0, user_tweet) # Add to the top of the list
+    else:
+        st.error("Please type something first!")
+
+# 4. The Feed (Display everything in the Storage Box)
+st.write("### Feed")
+for tweet in st.session_state.feed:
+    st.info(tweet) # st.info creates a nice blue box for each tweet
