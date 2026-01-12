@@ -3,12 +3,20 @@ import streamlit as st
 st.markdown(
     """
     <style>
+    /* 1. Sets the background color */
     .stApp {
         background-color: #E1F5FE;
     }
-    div.stButton > button:first-child[kind="primary"] {
-        background-color: #ff4b4b;
-        color: white;
+
+    /* 2. Forces almost all text (Labels, Markdown, etc.) to be black */
+    .stApp, .stMarkdown, p, h1, h2, h3, h4, h5, h6, label, span {
+        color: #000000 !important;
+    }
+
+    /* 3. Specifically targets the Primary Button */
+    div.stButton > button:first-child {
+        color: #ff4b4b !important; /* Makes button text black */
+        background-color: #000000;
         border-color: #ff4b4b;
     }
     </style>
