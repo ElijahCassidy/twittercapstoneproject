@@ -1,0 +1,151 @@
+import streamlit as st
+
+st.markdown(
+    """
+    <style>
+    header {visibility: hidden;}
+    .stAppViewMain > div:nth-child(1) {padding-top: 0rem;}
+    [data-testid="stDecoration"] {display: none;}
+
+    /* Base Background Color */
+    .stApp {
+        background-color: #2196F3;
+        color: white;
+    }
+
+    .stMarkdown, p, span, label {
+        color: white !important;
+    }
+
+    /* Buttons now inherit background color transparency or match exactly */
+    div.stButton > button {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    div.stButton > button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: white;
+        color: white;
+    }
+
+    /* The "Liked" Red Button remains high contrast */
+    div.stButton > button:first-child[kind="primary"] {
+        background-color: #FF5252 !important;
+        color: white !important;
+        border: none !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+if 'users' not in st.session_state:
+    st.session_state.users = {}
+if 'posts' not in st.session_state:
+    st.session_state.posts = []
+if 'post_id' not in st.session_state:
+    st.session_state.post_id = 1
+if 'liked_posts' not in st.session_state:
+    st.session_state.liked_posts = set()
+if 'choice' not in st.session_state:
+    st.session_state.choice = "View Feed"
+if 'show_menu' not in st.session_state:
+    st.session_state.show_menu = False
+
+st.title("Twitter Clone")
+
+# Main Category Button
+if st.button(f"☰ {st.session_state.choice.upper()}", use_container_width=True):
+    st.session_state.show_menu = not st.session_state.show_menu
+
+# Sub-menu shows up when Main is clicked
+if st.session_state.show_menu:
+    menu_options = ["View Feed", "Make a Post", "Create User", "Edit Bio"]
+    cols = st.columns(len(menu_options))
+    for i, tab in enumerate(menu_options):
+        if cols[i].button(tab, use_container_width=True):
+            st.session_state.choice = tab
+            st.session_state.show_menu = False
+            st.rerun()
+
+st.divider()
+
+choice = st.session_state.choice
+
+if choice == "Create User":
+    st.subheader("Create a New Account")
+    new_user = st.text_input("Enter a username")
+    new_bio = st.text_area("Enter your bio")
+    
+    if st.button("Register", use_container_width=True):
+        if new_user and new_user not in st.session_state.users:
+            st.session_state.users[new_user] = {'bio': new_bio, 'followers': 0}
+            st.success(f"User '{new_user}' created!")
+        else:
+            st.error("Username already exists or is empty.")
+
+elif choice == "Make a Post":
+    st.subheader("Share something!")
+    if not st.session_state.users:
+        st.warning("Please create a user first.")
+    else:
+        post_user = st.selectbox("Who are you?", list(st.session_state.users.keys()))
+        content = st.text_area("What's on your mind?")
+        
+        if st.button("Post", use_container_width=True):
+            new_post = {
+                "id": st.session_state.post_id,
+                "user": post_user,
+                "text": content,
+                "likes": 0
+            }
+            st.session_state.posts.append(new_post)
+            st.session_state.post_id += 1
+            st.success("Post shared to the feed!")
+
+elif choice == "View Feed":
+    st.markdown("### **THE FEED**")
+    
+    if not st.session_state.posts:
+        st.info("No posts yet.")
+    else:
+        for post in reversed(st.session_state.posts):
+            with st.container():
+                st.write(f"**@{post['user']}**")
+                st.write(post['text'])
+                
+                is_liked = post['id'] in st.session_state.liked_posts
+                
+                if st.button(
+                    f" Liked ({post['likes']})" if is_liked else f"♡ Like ({post['likes']})", 
+                    key=f"like_{post['id']}", 
+                    type="primary" if is_liked else "secondary",
+                    use_container_width=True
+                ):
+                    if not is_liked:
+                        post['likes'] += 1
+                        st.session_state.liked_posts.add(post['id'])
+                    else:
+                        post['likes'] -= 1
+                        st.session_state.liked_posts.remove(post['id'])
+                    st.rerun()
+                
+                st.divider()
+
+elif choice == "Edit Bio":
+    st.subheader("Update Your Profile")
+    if not st.session_state.users:
+        st.warning("No users found.")
+    else:
+        edit_user = st.selectbox("Select your username", list(st.session_state.users.keys()))
+        if edit_user:
+            new_bio = st.text_area("New Bio", value=st.session_state.users[edit_user]['bio'])
+            if st.button("Update", use_container_width=True):
+                st.session_state.users[edit_user]['bio'] = new_bio
+                st.success("Bio updated!")
+
