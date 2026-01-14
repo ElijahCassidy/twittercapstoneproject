@@ -1,0 +1,40 @@
+# ----- Tweet Object -----
+class Tweet:
+    def __init__(self, author, content):
+        if not is_allowed(content):
+            raise ValueError("Tweet blocked by moderation filter")
+
+        self.author = author
+        self.content = content
+        self.likes = 0
+
+    def like(self):
+        self.likes += 1
+
+
+# ----- Feed Logic -----
+class Feed:
+    def __init__(self):
+        self.tweets = []
+
+    def post_tweet(self, author, content):
+        tweet = Tweet(author, content)
+        self.tweets.append(tweet)
+
+    def like_tweet(self, index):
+        if 0 <= index < len(self.tweets):
+            self.tweets[index].like()
+
+    # ----- Sorting -----
+    def sort_likes_desc(self):
+        self.tweets.sort(key=lambda t: t.likes, reverse=True)
+
+    def sort_likes_asc(self):
+        self.tweets.sort(key=lambda t: t.likes)
+
+    # ----- Filtering -----
+    def filter_author(self, author):
+        return [t for t in self.tweets if t.author == author]
+
+    def filter_min_likes(self, min_likes):
+        return [t for t in self.tweets if t.likes >= min_likes]
