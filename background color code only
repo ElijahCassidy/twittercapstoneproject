@@ -1,0 +1,50 @@
+import streamlit as st
+
+st.markdown(
+    """
+    <style>
+    /* Hide Streamlit branding */
+    header {visibility: hidden;}
+    .stAppViewMain > div:nth-child(1) {padding-top: 0rem;}
+    [data-testid="stDecoration"] {display: none;}
+
+    /* Background and Text */
+    .stApp {
+        background-color: #64B5F6;
+        color: white;
+    }
+
+    .stMarkdown, p, span, label, .stSubheader {
+        color: white !important;
+    }
+
+    /* Standard Buttons */
+    div.stButton > button {
+        width: 100%;
+        background-color: #1565C0 !important;
+        color: white !important;
+        border: 1px solid #0D47A1 !important;
+        font-weight: bold;
+    }
+
+    /* Circle Like Button */
+    div[data-testid="stVerticalBlock"] div.stButton > button[key^="like_"] {
+        width: 50px !important;
+        height: 50px !important;
+        padding: 0px !important;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    /* Inputs */
+    .stTextInput>div>div>input, .stTextArea>div>div>textarea {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        color: #0D47A1 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
