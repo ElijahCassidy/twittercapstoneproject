@@ -1,0 +1,64 @@
+st.markdown(
+    """
+    <style>
+    header {visibility: hidden;}
+    .stAppViewMain > div:nth-child(1) {padding-top: 0rem;}
+    [data-testid="stDecoration"] {display: none;}
+
+    .stApp {
+        background-color: #64B5F6;
+        color: white;
+    }
+
+    .stMarkdown, p, span, label, .stSubheader {
+        color: white !important;
+    }
+
+    /* Main Menu Buttons */
+    div.stButton > button {
+        width: 100%;
+        background-color: #1565C0 !important;
+        color: white !important;
+        border: 1px solid #0D47A1 !important;
+        font-weight: bold;
+    }
+
+    /* Target the Like Buttons specifically to make them small circles */
+    /* We look for buttons inside the feed containers */
+    div[data-testid="stVerticalBlock"] div.stButton > button[key^="like_"] {
+        width: 50px !important;
+        height: 50px !important;
+        padding: 0px !important;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px !important;
+        margin: 0 auto; /* Centers the circle */
+    }
+
+    div.stButton > button:hover {
+        background-color: #0D47A1 !important;
+        border-color: white !important;
+    }
+
+    div.stButton > button[kind="primary"] {
+        background-color: #D32F2F !important;
+        color: white !important;
+        border: none !important;
+    }
+    
+    div[data-testid="stNotification"] {
+        background-color: #1565C0 !important;
+        color: white !important;
+        border: 1px solid #0D47A1 !important;
+    }
+
+    .stTextInput>div>div>input, .stTextArea>div>div>textarea, .stSelectbox>div>div>div {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        color: #0D47A1 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
