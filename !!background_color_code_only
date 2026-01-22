@@ -1,3 +1,5 @@
+import streamlit as st
+
 st.markdown(
     """
     <style>
@@ -82,6 +84,19 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+if 'users' not in st.session_state:
+    st.session_state.users = {}
+if 'posts' not in st.session_state:
+    st.session_state.posts = []
+if 'post_id' not in st.session_state:
+    st.session_state.post_id = 1
+if 'liked_posts' not in st.session_state:
+    st.session_state.liked_posts = set()
+if 'choice' not in st.session_state:
+    st.session_state.choice = "View Feed"
+if 'show_menu' not in st.session_state:
+    st.session_state.show_menu = False
 
 # Centered Title
 st.markdown('<h1 class="main-title">JA</h1>', unsafe_allow_html=True)
