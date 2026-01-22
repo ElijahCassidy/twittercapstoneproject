@@ -78,7 +78,7 @@ if 'choice' not in st.session_state:
 if 'show_menu' not in st.session_state:
     st.session_state.show_menu = False
 
-st.title("Twitter Clone")
+st.title("AJ")
 
 if st.button(f"☰ {st.session_state.choice.upper()}", use_container_width=True):
     st.session_state.show_menu = not st.session_state.show_menu
