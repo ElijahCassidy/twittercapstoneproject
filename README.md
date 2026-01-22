@@ -5,7 +5,7 @@ In this project, we will create a:
 1. Buttons/menus
 1. Color, spacing, and readability
 
-for our class' twitter project.
+for our class' twitter project called JA (our teacher's name, reversed).
 
 ## File Key
 
