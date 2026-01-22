@@ -1,33 +1,57 @@
-import streamlit as st
-
 st.markdown(
     """
     <style>
-    /* Hide Streamlit branding */
+    /* Importing modern fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@700&family=Inter:wght@400;600&display=swap');
+
     header {visibility: hidden;}
     .stAppViewMain > div:nth-child(1) {padding-top: 0rem;}
     [data-testid="stDecoration"] {display: none;}
 
-    /* Background and Text */
     .stApp {
         background-color: #64B5F6;
+        /* Geometric Pattern Overlay */
+        background-image:  radial-gradient(#ffffff33 1px, transparent 1px);
+        background-size: 20px 20px;
         color: white;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Centered Title with Bitcount/Courier style Font */
+    .main-title {
+        font-family: 'Courier', monospace;
+        font-size: 4rem;
+        text-align: center;
+        color: white;
+        padding: 20px 0;
+        letter-spacing: -2px;
+        text-shadow: 3px 3px 0px #1565C0;
     }
 
     .stMarkdown, p, span, label, .stSubheader {
         color: white !important;
+        font-family: 'Courier', sans-serif;
     }
 
-    /* Standard Buttons */
+    /* Main Menu Buttons */
     div.stButton > button {
         width: 100%;
         background-color: #1565C0 !important;
         color: white !important;
-        border: 1px solid #0D47A1 !important;
+        border: 2px solid #0D47A1 !important;
         font-weight: bold;
+        font-family: 'Inter', sans-serif;
+        border-radius: 12px;
+        transition: 0.2s ease-in-out;
+    }
+    
+    div.stButton > button:hover {
+        background-color: #0D47A1 !important;
+        border-color: white !important;
+        transform: scale(1.02);
     }
 
-    /* Circle Like Button */
+    /* Circle Like Buttons */
     div[data-testid="stVerticalBlock"] div.stButton > button[key^="like_"] {
         width: 50px !important;
         height: 50px !important;
@@ -36,15 +60,41 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 18px !important;
         margin: 0 auto;
     }
 
-    /* Inputs */
-    .stTextInput>div>div>input, .stTextArea>div>div>textarea {
+    /* Input Fields */
+    .stTextInput>div>div>input, .stTextArea>div>div>textarea, .stSelectbox>div>div>div {
         background-color: rgba(255, 255, 255, 0.9) !important;
         color: #0D47A1 !important;
+        font-family: 'Inter', sans-serif;
+        border-radius: 10px !important;
+    }
+
+    /* Feed Container Styling */
+    [data-testid="stVerticalBlock"] > div {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 10px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
+if 'users' not in st.session_state:
+    st.session_state.users = {}
+if 'posts' not in st.session_state:
+    st.session_state.posts = []
+if 'post_id' not in st.session_state:
+    st.session_state.post_id = 1
+if 'liked_posts' not in st.session_state:
+    st.session_state.liked_posts = set()
+if 'choice' not in st.session_state:
+    st.session_state.choice = "View Feed"
+if 'show_menu' not in st.session_state:
+    st.session_state.show_menu = False
+
+# Centered Title
+st.markdown('<h1 class="main-title">JA</h1>', unsafe_allow_html=True)
