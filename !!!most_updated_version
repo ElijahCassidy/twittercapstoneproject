@@ -3,17 +3,36 @@ import streamlit as st
 st.markdown(
     """
     <style>
+    /* Importing modern fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@700&family=Inter:wght@400;600&display=swap');
+
     header {visibility: hidden;}
     .stAppViewMain > div:nth-child(1) {padding-top: 0rem;}
     [data-testid="stDecoration"] {display: none;}
 
     .stApp {
         background-color: #64B5F6;
+        /* Geometric Pattern Overlay */
+        background-image:  radial-gradient(#ffffff33 1px, transparent 1px);
+        background-size: 20px 20px;
         color: white;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Centered Title with Bitcount/Courier style Font */
+    .main-title {
+        font-family: 'Courier', monospace;
+        font-size: 4rem;
+        text-align: center;
+        color: white;
+        padding: 20px 0;
+        letter-spacing: -2px;
+        text-shadow: 3px 3px 0px #1565C0;
     }
 
     .stMarkdown, p, span, label, .stSubheader {
         color: white !important;
+        font-family: 'Courier', sans-serif;
     }
 
     /* Main Menu Buttons */
@@ -21,12 +40,20 @@ st.markdown(
         width: 100%;
         background-color: #1565C0 !important;
         color: white !important;
-        border: 1px solid #0D47A1 !important;
+        border: 2px solid #0D47A1 !important;
         font-weight: bold;
+        font-family: 'Inter', sans-serif;
+        border-radius: 12px;
+        transition: 0.2s ease-in-out;
+    }
+    
+    div.stButton > button:hover {
+        background-color: #0D47A1 !important;
+        border-color: white !important;
+        transform: scale(1.02);
     }
 
-    /* Target the Like Buttons specifically to make them small circles */
-    /* We look for buttons inside the feed containers */
+    /* Circle Like Buttons */
     div[data-testid="stVerticalBlock"] div.stButton > button[key^="like_"] {
         width: 50px !important;
         height: 50px !important;
@@ -36,29 +63,22 @@ st.markdown(
         align-items: center;
         justify-content: center;
         font-size: 18px !important;
-        margin: 0 auto; /* Centers the circle */
+        margin: 0 auto;
     }
 
-    div.stButton > button:hover {
-        background-color: #0D47A1 !important;
-        border-color: white !important;
-    }
-
-    div.stButton > button[kind="primary"] {
-        background-color: #D32F2F !important;
-        color: white !important;
-        border: none !important;
-    }
-    
-    div[data-testid="stNotification"] {
-        background-color: #1565C0 !important;
-        color: white !important;
-        border: 1px solid #0D47A1 !important;
-    }
-
+    /* Input Fields */
     .stTextInput>div>div>input, .stTextArea>div>div>textarea, .stSelectbox>div>div>div {
         background-color: rgba(255, 255, 255, 0.9) !important;
         color: #0D47A1 !important;
+        font-family: 'Inter', sans-serif;
+        border-radius: 10px !important;
+    }
+
+    /* Feed Container Styling */
+    [data-testid="stVerticalBlock"] > div {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 10px;
     }
     </style>
     """,
@@ -78,7 +98,8 @@ if 'choice' not in st.session_state:
 if 'show_menu' not in st.session_state:
     st.session_state.show_menu = False
 
-st.title("AJ")
+# Centered Title
+st.markdown('<h1 class="main-title">JA</h1>', unsafe_allow_html=True)
 
 if st.button(f"☰ {st.session_state.choice.upper()}", use_container_width=True):
     st.session_state.show_menu = not st.session_state.show_menu
@@ -140,11 +161,10 @@ elif choice == "View Feed":
                 
                 is_liked = post['id'] in st.session_state.liked_posts
                 
-                # We move the Like count to the side or above so the button can stay a small circle
                 col1, col2 = st.columns([1, 10])
                 with col1:
                     if st.button(
-                        f" ❤️ ({post['likes']})  " if is_liked else "♡", 
+                        f" ❤️ " if is_liked else "♡", 
                         key=f"like_{post['id']}", 
                         type="primary" if is_liked else "secondary"
                     ):
