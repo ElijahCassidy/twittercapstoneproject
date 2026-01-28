@@ -16,4 +16,4 @@ for our class' twitter project called "Y" (it was originally named "JA", which o
 ### Folders:
 
 - **"old_files"** is the archive for all our old files.
-- **"other_group_code"** is the folder with the code from other groups working on our project.
+- **"other_group_code"** is the folder with some of the code from other groups working on our project.
