@@ -1,10 +1,3 @@
-This is the website link!
-https://twitter-server-5gxszvssqrcr8ewgdaez35.streamlit.app/
-
-
-
-
-
 # twittercapstoneproject
 In this project, we will create a:
 1. Visual layout
@@ -13,6 +6,11 @@ In this project, we will create a:
 1. Color, spacing, and readability
 
 for our class' twitter project called "Y" (it was originally named "JA", which our teacher's name reversed).
+
+## Final Website Link
+This is the website link!:
+
+https://twitter-server-5gxszvssqrcr8ewgdaez35.streamlit.app/
 
 ## File Key
 
